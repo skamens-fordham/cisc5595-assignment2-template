@@ -1,0 +1,9 @@
+{ "processes" : 
+	[{
+		"name": "process1"
+	},
+	{
+		"name": "process2"
+	}
+]
+}
