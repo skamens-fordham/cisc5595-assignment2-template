@@ -13,7 +13,7 @@
 class Process {
     public:
 
-        // Implement appropriate constructors and setter/getter functions here
+        // Define appropriate constructors and setter/getter functions here
 
 
         // This function will enable printing the Process using 

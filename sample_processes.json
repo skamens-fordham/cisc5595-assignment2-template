@@ -1,9 +1,9 @@
 { "processes" : 
 	[{
-		"name": "process1"
+		"process_name": "process1"
 	},
 	{
-		"name": "process2"
+		"process_name": "process2"
 	}
 ]
 }
