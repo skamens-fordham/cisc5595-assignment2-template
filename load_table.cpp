@@ -5,17 +5,8 @@
 //    --table_size <size> 
 
 #include <getopt.h>
-#include <string.h>
-#include <string>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
 #include <fstream>
 #include <iostream>
-#include <iomanip>
 
 #include "nlohmann/json.hpp"
 #include "process_table.h"
@@ -62,6 +53,7 @@ main(int argc, char ** argv)
         // Read from the ifstream into an nlohman::json object.
         // See https://github.com/nlohmann/json/blob/develop/README.md#serialization--deserialization for 
         // details. Make sure to handle any errors caused by badly formatted json files.
+        // (Hint - see https://nlohmann.github.io/json/features/parsing/parse_exceptions/)
         
 
 
@@ -74,7 +66,7 @@ main(int argc, char ** argv)
 
     // Print the contents of the table to cout
 
-    std::cout << std::setw(4) << table << std::endl;
+    cout << table << endl;
 
 
     return 0;
