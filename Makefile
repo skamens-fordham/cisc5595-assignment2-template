@@ -1,20 +1,15 @@
 CPPFLAGS = -g -I.
-LDFLAGS = -L. -lprocess
 
 libsrc = process.cpp process_table.cpp
 libobj = $(libsrc:.cpp=.o)
 
-all: process_test load_table libprocess.a
+all: process_test load_table
 
-libprocess.a : $(libobj)
-	ar ruv $@ $^
-	ranlib $@
+process_test: process_test.o $(libobj)
+	$(CXX) -o $@ process_test.o $(libobj)
 
-process_test: process_test.o libprocess.a
-	$(CXX) -o $@ process_test.o $(LDFLAGS)
-
-load_table: load_table.o libprocess.a
-	$(CXX) -o $@ load_table.o $(LDFLAGS)
+load_table: load_table.o $(libobj)
+	$(CXX) -o $@ load_table.o $(libobj)
 
 .PHONY: clean
 clean:
