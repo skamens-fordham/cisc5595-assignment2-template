@@ -1,0 +1,27 @@
+{ 
+	"options" : {
+		"table_size" : 3
+	}, 	
+	"actions" : 
+	[{
+		"action" : "add_process",
+		"process_name": "process1"
+	},
+	{
+		"action" : "add_process",
+		"process_name": "process2"
+	},
+	{
+		"action": "remove_process",
+		"process_id" : 1
+	},
+	{
+		"action": "add_process",
+		"process_name": "process3"
+	},
+	{
+		"action": "add_process",
+		"process_name": "process4"
+	}
+]
+}

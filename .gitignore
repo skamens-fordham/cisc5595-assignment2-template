@@ -1,4 +1,4 @@
 *.o
 *.a
-load_table
-process_test
+execute
+__pycache__
