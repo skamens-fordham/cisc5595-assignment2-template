@@ -10,96 +10,103 @@
 
 using namespace std;
 
-ProcessTable::ProcessTable(int size) :
-    m_tableSize(size), m_currentIdx(-1), m_processTable(NULL)
+ProcessTable::ProcessTable(int size)
 {
-    // Allocate the array of processes
-    //
-    // Note that the default constructor should run 
-    // for each of the array elements
+    // Implement the constructor for the ProcessTable class.
+    // This should allocate the array of Processes,
+    // save the table size, and initialize any other varible 
 
-    m_processTable = new Process[m_tableSize];
 }
+
 
 ProcessTable::~ProcessTable()
 {
-    delete[] m_processTable;
+    // Clean up memory that was allocated in the constructor
 }
 
 int
 ProcessTable::getSize() 
 {
-    return m_tableSize;
+    // Add implementation here
 }
 
 int
 ProcessTable::add(const Process& p)
 {
-    // Start with the next index (currentIndex + 1)
-    // Keep iterating until we reach currentIndex.
-    // If we find an empty spot before we get back
-    // around, that's our next spot.
-    // 
-    // Note the loop incrementer which has to 
-    // get the remainder so i wraps around to 
-    // 0 
-
-    int newIdx = (m_currentIdx + 1) % m_tableSize;
-    int i;
-    for (i = 0; i < m_tableSize; i++)
-    {
-	if (m_processTable[newIdx].processId() == -1) {
-	    break;
-	}
-
-         newIdx = (newIdx + 1) % m_tableSize;
-    }
-
-    if (i == m_tableSize) {
-	// This means we got around to the beginning,
-	// so there was no open slot
-        return -1;
-    }
-
-    m_processTable[newIdx].setProcessId(newIdx + 1);
-    m_processTable[newIdx].setProcessName(p.processName());
-    m_currentIdx = newIdx;
-
-    return m_processTable[newIdx].processId();
+    // Implement the algorithm to add a process to the table.
+    // Processes should be added starting at position 0
+    // in the array, with subsequent entries being added
+    // in order.
+    //
+    // If a Process is successfully added, return its process ID 
+    // (remember that process ID's are tied to the location in
+    // the array, starting at 1).
+    //
+    // If a process can not be added because the table is full,
+    // return -1.
+    //
+    // Some examples are below, assuming a process table size of 5.
+    // Key:
+    //     -     empty slot
+    //     *     full slot
+    //     +     full slot; this is the most recently added process
+    //     @     Place where the new one is added
+    //
+    //
+    // Before: - - - - -
+    // After: @ - - - - (return 1)
+    //
+    // Before: * * + - - 
+    // After: * * + @ - (return 4)
+    //
+    // Before: * * - + -
+    // After: * * - + @ (return 5)
+    //
+    // Before: * * - * +
+    // After: * * @ * + (return 3)
+    //
+    // Before: * * * * +
+    // After: * * * * + (return -1)
+    
 }
 
 
 bool ProcessTable::remove(int processId)
 {
-    if (m_processTable[processId - 1].processId() == -1) {
-        return false;
-    }
-
-    m_processTable[processId - 1].setProcessId(-1);
-    m_processTable[processId - 1].setProcessName("");
-    return true;
+    // Implement the algorithm to remove a process from 
+    // the process table.
+    //
+    // A process is removed by finding the Process
+    // in the process table that should be removed,
+    // and setting its name to "" and its process ID to -1
+    
 }
 
-Process& ProcessTable::find(int processId)
+Process* ProcessTable::find(int processId)
 {
-    // Return this when we don't find the process id requested
-    static Process notFound("", -1);
-
-    if(m_processTable[processId - 1].processId() == -1) {
-        return notFound;
-    }
-
-    return m_processTable[processId - 1];
+    // Find the slot in the process table associated with the
+    // given process ID. 
+    // 
+    // If that slot is not empty, return a pointer to 
+    // the process in that position.
+    //
+    // If that slot is empty, return NULL
 }
 
 // Friend function to print the object
 std::ostream& operator<<(std::ostream& os, const ProcessTable& t)
 {
-    for (int i = 0; i < t.m_tableSize; ++i)
-    {
-        if (t.m_processTable[i].processId() != -1) {
-            os << t.m_processTable[i] << endl;
-        }
-    }
+    // iterate through the process table in order. 
+    // If the process in each position is empty, skip it.
+    // If the process in the current position is non-empty, print it
+    // on a single line using its operator<< method:
+    //    os << process;
+    //
+    // For a process table with two entries, the output
+    // should look like this:
+    // {"process_id":1,"process_name":"process1"}
+    // {"process_id":2,"process_name":"process2"}
+
+
     return os;
 }

@@ -21,7 +21,7 @@ class ProcessTable {
         int getSize();
         int add(const Process& p);
         bool remove(int processId);
-        Process& find(int processId);
+        Process* find(int processId);
 
         // To enable printing the object
         // This function should print each of the non-empty processes in 
@@ -29,12 +29,15 @@ class ProcessTable {
         friend std::ostream& operator<<(std::ostream& os, const ProcessTable& t);
 
     private:
-       // Add private member variables here
 
-       int m_tableSize;
-       Process * m_processTable;
+        // The process table itself is represented by an array of Process
+        // objects. 
+        Process * m_processTable;
+        int m_tableSize;
 
-       int m_currentIdx;
+        // Add any other member variables that you need to implement
+        // this class.
+
     };
 
 #endif // OS_PROCESS_TABLE_H

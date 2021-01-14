@@ -52,6 +52,8 @@ void Process::setProcessId(int processId)
 std::ostream& operator<<(std::ostream& os, const Process& p)
 {
 
+
+    return os;
 }
 
 // Populate the given json object with the members of the Process object.

@@ -17,98 +17,114 @@ int
 main(int argc, char ** argv)
 {
 
-    // Table size defaults to 100 if not specified on the command line
-    int tableSize = 100;
+
+    // This program should accept a single command line argument, which is the
+    // name of the input file to use.
+    //      $ execute <input_file>
+    //
+    // Check that the argument has been provided by the caller; if no argument is
+    // given, print an error message and exit.
+    
 
 
-    if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <input_file>" << endl;
-        return(3);
-    }
-        
-    // Open the input file. 
-    ifstream in(argv[1]);
-    if (! in.good()) {
-        cerr << "Failed to open file " << argv[1] << endl;
-        return(4);
-    }
+
 
     nlohmann::json input_json;
 
-    // Read the file into the json object.
-    // If the input file is not in json format, this will
-    // throw an exception
+    // Read the input file into the input_json object
+    // See https://github.com/nlohmann/json for details on how
+    // to load a json file from a file.
+    //
+    // If possible, handle the situation where the input file
+    // is not valid json. See https://json.nlohmann.me/features/parsing/parse_exceptions/
+    // for some hints on how to take this situation into account.
 
-    try {
-        in >> input_json;
-    } catch (nlohmann::json::exception& e) {
-        cerr << "Error: " << e.what() << endl
-             << "exception id: " << e.id << endl;
-        return(5);
-    }
 
-    if (input_json.contains("table_size")) {
-        tableSize = input_json["table_size"];
-    }
+
+
+
+
+    // Handle the "options:" section of the input json.
+    // 
+    // This entry will look like this:
+    //    "options" : {
+	//   	 "table_size" : 3
+	//    }
+    //
+
+    // Table size defaults to 100 if not specified in the input file
+    int tableSize = 100;
+
+    // Check if the "options" section is there, and if it is,
+    // also check if "table_size" is inside it; if so,
+    // set the tableSize variable to the value from
+    // the input file.
+
+
+
+
 
     // Initialize a ProcessTable with the table size obtained via
     // the command-line arguments
     ProcessTable table(tableSize);
 
-    // Iterate the actions in the input json,
-    // processing each action in turn.
-    // After each action, the entire process table
-    // is printed
 
-    for(auto action = input_json["actions"].begin(); 
-            action != input_json["actions"].end();
-            ++action) {
+
+    // The actions list looks like this:
+
+    // "actions" : 
+	// [{
+	// 	  "action" : "add_process",
+	//    "process_name": "process1"
+	// },
+	// {
+	//    "action" : "add_process",
+	// 	  "process_name": "process2"
+	// },
+    // 	{
+	// 	  "action": "remove_process",
+	// 	  "process_id" : 1
+	// }]
+
+
+    // Iterate the set of actions
+    // (see https://json.nlohmann.me/features/iterators/ for some information
+    // on how to iterate)
+    //
+    // For each action found, perform the requested action and print the entire
+    // process table, followed by a blank line.
+    //
+    // So for the brief set of actions shown above, the output should look
+    // like this:
+    //
+    // {"process_id":1,"process_name":"process1"}
+
+    // {"process_id":1,"process_name":"process1"}
+    // {"process_id":2,"process_name":"process2"}
+
+    // {"process_id":2,"process_name":"process2"}
+
+    
+
+    for(/* each action */ ) {
             
-        if (! action->contains("action")) {
-            cerr << "Error: No 'action' keyword found in input: " << *action << endl;
-            return(6);
-        }
+        if (/* the action specified is "add_process" */) {
+           
+           // Create a new Process object whose process
+           // name is the one indicated in the action.
+           //
+           // Add that process to the table using table.add()
+           // If the add() call fails, print an error message and exit
 
-        if (action->at("action") == "add_process") {
-            Process p;
-
-            // Note that if there is an extra unrecogized keyword
-            // in the input json, it will simply be ignored, and no
-            // exception will be thrown.
-            try {
-                action->get_to(p);
-            } catch (nlohmann::json::exception& e) {
-                // output exception information
-                cerr << "Error: " << e.what() << endl
-                     << "exception id: " << e.id << std::endl;
-                return(6);
-            } catch (std::invalid_argument& e) {
-                cerr << "Error: " << e.what() << endl;
-                return(7);
-            }
-
-            if (!table.add(p)) {
-                cerr << "Failed to add process: " << p.processName() << endl;
-                return(8);
-            }
-        } else if (action->at("action") == "remove_process") {
-            Process p;
-
-            if (! action->contains("process_id")) {
-                cerr << "Error: 'remove_process' action requires 'process_id': " << *action << endl;
-                return(9);
-            }
-
-            int process_id = (*action)["process_id"];
-
-            if (! table.remove(process_id)) {
-                cerr << "Error removing process_id " << process_id << endl;
-                return(10);
-            }
+        } else if (/* the action specified is "remove_process" */) {
+            
+            // Find the process ID in the action segment
+            // 
+            // call table.remove() on that process ID
+            // If the call to remove() fails, print an error message and exit
         }        
     
-        cout << table;
-        cout << endl;
+        // Print the entire contents of the table, followed by a blank line
 
     }
 
