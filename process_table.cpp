@@ -79,6 +79,10 @@ bool ProcessTable::remove(int processId)
     // A process is removed by finding the Process
     // in the process table that should be removed,
     // and setting its name to "" and its process ID to -1
+    //
+    // If the process was successfully removed, return true.
+    // If the processID is out of range, or it slot is already
+    // empty, return false
     
 }
 
